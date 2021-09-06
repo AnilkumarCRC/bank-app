@@ -9,7 +9,7 @@ public class Banker extends Bank{
        return createBankAccount(name, address, mobile, accountType);
     }
 
-    public double getBalance(int accountNumber) {
+    public double getBalance(int accountNumber)  throws GlobalExceptionMessage{
         return super.getBalance(accountNumber);
     }
 
@@ -19,7 +19,7 @@ public class Banker extends Bank{
     }
 
     @Override
-    public void withdraw(int accountNumber, double amount) {
+    public void withdraw(int accountNumber, double amount)  throws GlobalExceptionMessage{
         this.debit(accountNumber,amount);
     }
 
@@ -33,16 +33,7 @@ public class Banker extends Bank{
         return  accountInfo;
     }
 
-    private Transaction findTransactionDetails(int accountNumber){
-        Transaction transactionsInfo = transactions.stream().filter(transaction -> transaction.getTransactionAccount() == accountNumber ).findAny().orElse(null);
-        return transactionsInfo;
-    }
-
-    protected void listOfTransactions(int accountNumber){
-        Transaction transactions = this.findTransactionDetails(accountNumber);
-        for (Transaction transaction: Transactions
-             ) {
-
-        }
+    public void findTransactions(int accountNumber){
+        this.listOfTransactions(accountNumber);
     }
 }

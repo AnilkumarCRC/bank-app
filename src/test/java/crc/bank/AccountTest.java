@@ -17,7 +17,7 @@ class AccountTest {
     }
 
     @Test
-    void getBalance() {
+    void getBalance() throws GlobalExceptionMessage{
         assertEquals(0.0,account.getBalance(accountNumber));
     }
 
@@ -36,6 +36,6 @@ class AccountTest {
 
     @Test
     void getAccountNumber() {
-        assertEquals(accountNumber,account.getAccountDetails(accountNumber).getAccountNumber());
+        assertEquals(accountNumber,account.searchAccountDetails(accountNumber).getAccountNumber());
     }
 }
