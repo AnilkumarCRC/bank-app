@@ -26,7 +26,7 @@ public abstract class Bank implements BankInterface {
         return (int)(Math.random()*(11111-9+1)+9);
     }
 
-    private Account getAccount(int accountNumber) throws GlobalExceptionMessage{
+    protected Account getAccount(int accountNumber) throws GlobalExceptionMessage{
         Account accountInfo = accounts.stream().filter(account -> account.getAccountNumber() == accountNumber ).findAny().orElse(null);
         if(accountInfo == null) {
             throw new GlobalExceptionMessage("Account not found");
@@ -35,11 +35,21 @@ public abstract class Bank implements BankInterface {
     }
 
     protected void credit(int accountNumber, double amount) throws GlobalExceptionMessage {
+        if(amount < 0){
+            throw new GlobalExceptionMessage("Minimum amount should be more than 1 rupee");
+        }
         getAccount(accountNumber).credit(amount);
         transactions.add(new Transaction(accountNumber, TransactionTypes.credit,"amount: "+amount));
     }
 
     protected void debit(int accountNumber, double amount) throws GlobalExceptionMessage {
+        if(amount <= 0){
+            throw new GlobalExceptionMessage("Minimum amount should be more than 1 rupee");
+        }
+        double balance = getAccount(accountNumber).getBalance();
+        if(amount > balance){
+            throw new GlobalExceptionMessage("Account does not have sufficient amount to do transaction");
+        }
         getAccount(accountNumber).debit(amount);
         transactions.add(new Transaction(accountNumber, TransactionTypes.debit,"amount: "+amount));
     }
@@ -57,11 +67,7 @@ public abstract class Bank implements BankInterface {
         this.credit(toAccount, amount);
     }
 
-    protected void listOfTransactions(int accountNumber) {
-        for (Transaction transaction : transactions) {
-            if (transaction.getTransactionAccount() == accountNumber) {
-                System.out.println(transaction.accountTransactions());
-            }
-        }
+    public List<Transaction> listOfTransactions() {
+        return transactions;
     }
 }

@@ -1,6 +1,9 @@
 package crc.bank;
 
 import crc.constants.AccountTypes;
+import crc.exception.GlobalExceptionMessage;
+
+import java.util.List;
 
 public class Account
 {
@@ -8,7 +11,7 @@ public class Account
     private double balance;
     private AccountTypes type;
 
-    public Account(int accountNumber, AccountTypes type,  double balance)
+    protected Account(int accountNumber, AccountTypes type,  double balance)
     {
         this.accountNumber = accountNumber;
         this.type = type;

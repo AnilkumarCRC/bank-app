@@ -12,6 +12,7 @@ public class Transaction {
     private String transactionDate;
     private TransactionTypes transactionType;
 
+    // should not be public
     public Transaction(int  accountNumber,TransactionTypes transactionType,String transactionMessage){
         LocalDateTime myDateObj = LocalDateTime.now();
         this.transactionId = generateTid();
@@ -21,7 +22,7 @@ public class Transaction {
         this.transactionMessage = transactionMessage;
     }
 
-    public String accountTransactions() {
+    public String accountTransaction() {
         return "Transaction id-"+this.transactionId
                 +" on the account "+this.transactionAccount
                 +" is "+this.transactionType
@@ -33,7 +34,7 @@ public class Transaction {
         return (int)(Math.random()*(22222-8+2)+8);
     }
 
-    public int getTransactionAccount() {
+    public int getAccount() {
         return transactionAccount;
     }
 }

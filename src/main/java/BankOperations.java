@@ -1,7 +1,9 @@
-import crc.constants.AccountTypes;
 import crc.bank.Banker;
+import crc.bank.Transaction;
+import crc.constants.AccountTypes;
 import crc.exception.GlobalExceptionMessage;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class BankOperations {
@@ -16,11 +18,12 @@ public class BankOperations {
             System.out.println("\t\t\tWelcome to Banking System ");
             System.out.println("************************************************************************\n");
             System.out.println("Select your option from below list");
-            System.out.println("1. Account Registration");
+            System.out.println("1. Account registration");
             System.out.println("2. Transfer amount to the account");
             System.out.println("3. Deposit amount to the account");
             System.out.println("4. Withdraw amount to the account");
-            System.out.println("5. Account Statements");
+            System.out.println("5. Account statements");
+            System.out.println("5. List all transactions");
             System.out.println("6. Exit\n");
             System.out.print("Enter your option: ");
             operated = scan.nextInt();
@@ -84,10 +87,26 @@ public class BankOperations {
                 case 5:
                     System.out.println("Enter your account number");
                     accountNumber = scan.nextInt();
-                    bankActivities.findTransactions(accountNumber);
+                    List<String> transactions = bankActivities.findAccountTransactions(accountNumber);
+                    if(transactions.isEmpty()){
+                        throw new GlobalExceptionMessage("No Transactions found for given account "+accountNumber);
+                    }
+                    for (String transaction : transactions) {
+                        System.out.println(transaction);
+                    }
+                    break;
+                case 6:
+                    System.out.println("List of transactions");
+                    List<Transaction> transactionsList = bankActivities.listOfTransactions();
+                    if(transactionsList.isEmpty()){
+                        throw new GlobalExceptionMessage("No transaction details found");
+                    }
+                    for (Transaction transaction : transactionsList) {
+                        System.out.println (transaction.accountTransaction());
+                    }
                     break;
             }
-        }while(operated < 6);
-        System.out.println("Thanks for console banking..!");
+        }while(operated < 7);
+        System.out.println("Thanks for banking with us..!");
     }
 }

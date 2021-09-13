@@ -3,13 +3,16 @@ package crc.bank;
 import crc.constants.AccountTypes;
 import crc.exception.GlobalExceptionMessage;
 
-public class Banker extends Bank{
+import java.util.ArrayList;
+import java.util.List;
+
+public class Banker extends Bank {
 
     public int createAccount(String name, String address, String mobile, AccountTypes accountType) {
-       return createBankAccount(name, address, mobile, accountType);
+        return createBankAccount(name, address, mobile, accountType);
     }
 
-    public double getBalance(int accountNumber)  throws GlobalExceptionMessage{
+    public double getBalance(int accountNumber)  throws GlobalExceptionMessage {
         return super.getBalance(accountNumber);
     }
 
@@ -24,16 +27,25 @@ public class Banker extends Bank{
     }
 
     @Override
-    public void transfer(int fromAccount, int toAccount, double amount)  throws GlobalExceptionMessage{
+    public void transfer(int fromAccount, int toAccount, double amount) throws GlobalExceptionMessage{
         this.transferAmount(fromAccount, toAccount, amount);
     }
 
-    protected Account searchAccountDetails(int accountNumber){
-        Account accountInfo = accounts.stream().filter(account -> account.getAccountNumber() == accountNumber ).findAny().orElse(null);
-        return  accountInfo;
+    protected Account searchAccountDetails(int accountNumber)  throws GlobalExceptionMessage{
+        return this.getAccount(accountNumber);
     }
 
-    public void findTransactions(int accountNumber){
-        this.listOfTransactions(accountNumber);
+    public List<String> findAccountTransactions(int accountNumber) throws GlobalExceptionMessage{
+        List<Transaction> transactions = this.listOfTransactions();
+        if(transactions.isEmpty()){
+            throw new GlobalExceptionMessage("No transactions found");
+        }
+        List<String> accountTransactions = new ArrayList<>();
+        for (Transaction transaction : transactions) {
+            if (transaction.getAccount() == accountNumber) {
+                accountTransactions.add(transaction.accountTransaction());
+            }
+        }
+        return accountTransactions;
     }
 }
